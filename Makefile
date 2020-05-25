@@ -4,7 +4,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS =  ft_print.c \
+SRCS =  ft_printf.c \
 		ft_basic_str.c \
 		ft_hexa_str.c \
 		ft_atoi.c \
@@ -22,10 +22,6 @@ SRCS =  ft_print.c \
 
 OBJS = $(SRCS:.c=.o)
 
-BONUS_SRCS =  .
-
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
-
 RM = rm -f
 
 %.o : %.c
@@ -37,12 +33,10 @@ $(NAME) : ${OBJS}
 all :	${NAME}
 
 clean:
-		${RM} ${OBJS} ${BONUS_OBJS}
+		${RM} ${OBJS}
 
 fclean:	clean
-		${RM} ${NAME} $(bonus)
+		${RM} ${NAME}
 
 re:		fclean all
 
-bonus : ${OBJS} ${BONUS_OBJS}
-		ar cr $(NAME) $?

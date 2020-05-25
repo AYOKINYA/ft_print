@@ -1,4 +1,16 @@
-#include "ft_print.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkang <jkang@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 17:50:56 by jkang             #+#    #+#             */
+/*   Updated: 2020/05/19 00:41:16 by jkang            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
 
 int	ft_is_space(const char c)
 {
@@ -32,10 +44,10 @@ int	ft_atoi(const char *str)
 			sign = sign * -1;
 		++i;
 	}
-	while(str[i] != '\0' && ft_is_numeric(str[i]))
+	while (str[i] != '\0' && ft_is_numeric(str[i]))
 	{
 		res = res * 10 + (str[i] - 48);
 		++i;
 	}
-	return(sign * res);
+	return (sign * res);
 }

@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_basic_str.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkang <jkang@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 17:51:43 by jkang             #+#    #+#             */
+/*   Updated: 2020/05/19 00:41:09 by jkang            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "ft_print.h"
+#include "ft_printf.h"
 
 int		ft_strlen(const char *s)
 {
@@ -23,7 +34,7 @@ int		ft_putstr(const char *s)
 
 	i = 0;
 	count = 0;
-	while(s[i] != '\0')
+	while (s[i] != '\0')
 	{
 		write(1, &s[i], 1);
 		++i;
@@ -42,7 +53,7 @@ void	ft_putnbr(long long n)
 		ft_putchar(n % 10 + '0');
 	}
 	else
-		{
+	{
 		if (n == -2147483648)
 			write(1, "-2147483648", 11);
 		else

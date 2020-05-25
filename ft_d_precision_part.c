@@ -1,10 +1,22 @@
-#include "ft_print.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_d_precision_part.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkang <jkang@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 18:08:37 by jkang             #+#    #+#             */
+/*   Updated: 2020/05/19 00:39:00 by jkang            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	d_negative_print(t_list opt, int *ptr, int *print_len)
+#include "ft_printf.h"
+
+int		d_negative_print(t_list opt, long *ptr, int *print_len)
 {
 	int		ret;
 	char	*tmp;
-	
+
 	ret = 0;
 	if (opt.precs_len >= opt.width)
 		ret = 1;
@@ -17,10 +29,11 @@ int	d_negative_print(t_list opt, int *ptr, int *print_len)
 	write(1, tmp, *print_len);
 	*print_len = ft_len(*ptr) + 1;
 	free(tmp);
+	*ptr = *ptr * -1;
 	return (ret);
 }
 
-int	d_positive_print(t_list opt, int ptr, int print_len)
+int		d_positive_print(t_list opt, long ptr, int print_len)
 {
 	char	*tmp;
 
@@ -32,55 +45,49 @@ int	d_positive_print(t_list opt, int ptr, int print_len)
 	return (0);
 }
 
-void	ft_d_conversion_pad_right_blnk(t_list opt, int print_len)
+void	ft_d_conversion_pad_right_blnk(t_list opt, long ptr, int print_len)
 {
 	if (print_len > opt.precs_len)
 		ft_pad_right_blnk(opt.width, print_len, opt.left);
 	else
-		ft_pad_right_blnk(opt.width, opt.precs_len + 1, opt.left);
+	{
+		if (ptr < 0)
+			ft_pad_right_blnk(opt.width, opt.precs_len + 1, opt.left);
+		else
+			ft_pad_right_blnk(opt.width, opt.precs_len, opt.left);
+	}
 }
 
-int	d_with_precision(t_list opt, int ptr, int print_len)
+void	d_with_precision_pad_left_blnk(t_list opt, long ptr, int print_len)
 {
-	int	ret;
-
-	ret = 0;
 	if (print_len > opt.precs_len)
 		ft_pad_left_blnk(opt.width, print_len, opt.left, opt.zero);
 	else
-	{   if (ptr < 0)
+	{
+		if (ptr < 0)
 			ft_pad_left_blnk(opt.width, opt.precs_len + 1, opt.left, opt.zero);
 		else
 			ft_pad_left_blnk(opt.width, opt.precs_len, opt.left, opt.zero);
 	}
+}
+
+int		d_with_precision(t_list opt, long ptr, int print_len)
+{
+	int	ret;
+
+	ret = 0;
+	d_with_precision_pad_left_blnk(opt, ptr, print_len);
 	if (ptr < 0)
 		ret = d_negative_print(opt, &ptr, &print_len);
 	else
 		ret = d_positive_print(opt, ptr, print_len);
 	if (ret == -1)
 		return (-1);
-	ft_d_conversion_pad_right_blnk(opt, print_len);
+	ft_d_conversion_pad_right_blnk(opt, ptr, print_len);
 	if (opt.width > print_len || opt.precs_len > print_len)
 		ret += ft_max(opt.width, opt.precs_len);
-	else
-		ret = print_len;
-	return (ret);
-}
-
-int	d_without_precision(t_list opt, int ptr, int print_len)
-{
-	int		ret;
-	char	*tmp;
-
-	ret = 0;
-	if (!(tmp = ft_itoa(ptr)))
-		return (-1);
-	ft_pad_left_blnk(opt.width, print_len, opt.left, opt.zero);
-	write(1, tmp, print_len);
-	ft_pad_right_blnk(opt.width, print_len, opt.left);
-	free(tmp);
-	if (opt.width > print_len)
-		ret = opt.width;
+	else if (ptr < 0 && (opt.precs_len + 1 > print_len))
+		ret += print_len;
 	else
 		ret = print_len;
 	return (ret);

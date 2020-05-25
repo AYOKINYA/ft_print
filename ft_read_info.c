@@ -1,6 +1,18 @@
-#include "ft_print.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_read_info.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkang <jkang@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 23:54:10 by jkang             #+#    #+#             */
+/*   Updated: 2020/05/19 00:39:36 by jkang            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_print_till_percent(const char **format)
+#include "ft_printf.h"
+
+int		ft_print_till_percent(const char **format)
 {
 	int ret;
 
@@ -17,7 +29,9 @@ int	ft_print_till_percent(const char **format)
 
 void	ft_left_n_zeroflag(const char **format, t_list *opt)
 {
-	if (**format == '-')
+	while (**format == '-' || **format == '0')
+	{
+		if (**format == '-')
 		{
 			(*opt).left = 1;
 			++(*format);
@@ -27,11 +41,7 @@ void	ft_left_n_zeroflag(const char **format, t_list *opt)
 			(*opt).zero = 1;
 			++(*format);
 		}
-		if (**format == '-' && **(format - 2) != '-')
-		{
-			(*opt).left = 1;
-			++(*format);
-		}
+	}
 }
 
 void	ft_read_width(const char **format, t_list *opt, va_list *ap)
@@ -43,19 +53,24 @@ void	ft_read_width(const char **format, t_list *opt, va_list *ap)
 			(*opt).width = va_arg(*ap, int);
 			if ((*opt).width < 0)
 			{
+				(*opt).width_neg = 1;
 				(*opt).width = ft_abs((*opt).width);
 				(*opt).left = 1;
+				(*opt).zero = 0;
 			}
+			else
+				(*opt).zero_original = (*opt).zero;
 			++(*format);
 		}
 		else
 		{
 			(*opt).width = ft_atoi(*format);
-			while(ft_is_numeric(**format))
+			while (ft_is_numeric(**format))
 				++(*format);
 		}
 	}
 }
+
 void	ft_read_precision(const char **format, t_list *opt, va_list *ap)
 {
 	if (**format == '.')
@@ -67,6 +82,7 @@ void	ft_read_precision(const char **format, t_list *opt, va_list *ap)
 	{
 		if (**format == '*')
 		{
+			(*opt).precs_star = 1;
 			(*opt).precs_len = va_arg(*ap, int);
 			++(*format);
 		}

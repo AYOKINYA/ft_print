@@ -1,8 +1,20 @@
-#include "ft_print.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_hexa_str.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkang <jkang@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/18 23:35:54 by jkang             #+#    #+#             */
+/*   Updated: 2020/05/19 00:39:04 by jkang            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
 
 void		ft_putnbr_base(unsigned long long nb, const char *base)
 {
-	unsigned long long     base_len;
+	unsigned long long	base_len;
 
 	base_len = ft_strlen(base);
 	if (nb < base_len)
@@ -16,18 +28,17 @@ void		ft_putnbr_base(unsigned long long nb, const char *base)
 
 int			ft_converted_len(unsigned long long nb, const char *base)
 {
-	unsigned long long      base_len;
-	int                     count;
+	unsigned long long	base_len;
+	int					count;
 
 	base_len = ft_strlen(base);
 	count = 0;
-
 	if (nb < base_len)
 		++count;
 	else
 	{
 		while (nb != 0)
-		{    
+		{
 			nb = nb / base_len;
 			++count;
 		}
@@ -42,9 +53,9 @@ long long	ft_abs(long long n)
 	return (n);
 }
 
-long long	ft_len(long long n)
+int			ft_len(long long n)
 {
-	int     len;
+	int	len;
 
 	len = 0;
 	if (n <= 0)
@@ -57,10 +68,10 @@ long long	ft_len(long long n)
 	return (len);
 }
 
-char		*ft_itoa(int n)
+char		*ft_itoa(long long n)
 {
 	char		*res;
-	size_t		len;
+	int			len;
 	long		nbr;
 
 	nbr = n;
